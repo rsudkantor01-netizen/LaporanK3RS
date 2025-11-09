@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan K3RS - RSUD Talaud</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .header {
+            background-color: #0d6efd;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        .logo i {
+            font-size: 40px;
+            color: #0d6efd;
+        }
+        .hospital-name {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .info-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .info-section h2 {
+            color: #0d6efd;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .form-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-top: 30px;
+        }
+        .form-section h2 {
+            color: #0d6efd;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .reports-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-top: 30px;
+        }
+        .reports-section h2 {
+            color: #0d6efd;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .report-card {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        .report-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .report-date {
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .report-status {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .status-new {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        .status-processing {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-resolved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .empty-reports {
+            text-align: center;
+            padding: 30px;
+            color: #6c757d;
+        }
+        .empty-reports i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: none;
+            z-index: 1000;
+        }
+        .incident-type {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .incident-type .form-check {
+            flex: 0 0 calc(33.333% - 10px);
+        }
+        @media (max-width: 768px) {
+            .incident-type .form-check {
+                flex: 0 0 calc(50% - 10px);
+            }
+        }
+        @media (max-width: 576px) {
+            .incident-type .form-check {
+                flex: 0 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <span id="notification-text">Laporan berhasil dikirim!</span>
+    </div>
+
+    <header class="header">
+        <div class="container">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="bi bi-hospital"></i>
+                </div>
+                <div class="hospital-name">RSUD Talaud</div>
+            </div>
+            <h1 class="text-center">Sistem Pelaporan Keselamatan dan Kesehatan Kerja Rumah Sakit (K3RS)</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="info-section">
+            <h2><i class="bi bi-info-circle-fill me-2"></i>Tentang Pelaporan K3RS</h2>
+            <p>Sistem Pelaporan K3RS RSUD Talaud dirancang untuk memfasilitasi pelaporan insiden keamanan dan keselamatan pasien, serta kejadian yang tidak diharapkan di lingkungan rumah sakit. Melalui sistem ini, kami dapat mengidentifikasi, menganalisis, dan mengambil tindakan perbaikan untuk mencegah kejadian serupa di masa depan.</p>
+            <p>Semua laporan akan ditangani secara rahasia dan digunakan untuk tujuan peningkatan mutu pelayanan kesehatan di RSUD Talaud.</p>
+        </section>
+
+        <section class="info-section">
+            <h2><i class="bi bi-shield-check me-2"></i>Manfaat Pelaporan K3RS</h2>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex">
+                        <i class="bi bi-check-circle-fill text-success me-3 mt-1"></i>
+                        <div>
+                            <h5>Meningkatkan Keselamatan Pasien</h5>
+                            <p>Identifikasi risiko dan mencegah cedera yang dapat terjadi pada pasien.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex">
+                        <i class="bi bi-check-circle-fill text-success me-3 mt-1"></i>
+                        <div>
+                            <h5>Meningkatkan Keselamatan Pekerja</h5>
+                            <p>Mengurangi risiko cedera dan penyakit akibat kerja di lingkungan rumah sakit.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex">
+                        <i class="bi bi-check-circle-fill text-success me-3 mt-1"></i>
+                        <div>
+                            <h5>Meningkatkan Kualitas Pelayanan</h5>
+                            <p>Perbaikan berkelanjutan berdasarkan analisis insiden yang terjadi.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex">
+                        <i class="bi bi-check-circle-fill text-success me-3 mt-1"></i>
+                        <div>
+                            <h5>Meningkatkan Kepatuhan</h5>
+                            <p>Memastikan kepatuhan terhadap regulasi dan standar K3RS yang berlaku.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <h2><i class="bi bi-question-circle-fill me-2"></i>Panduan Pelaporan</h2>
+            <ol>
+                <li>Isi formulir pelaporan di bawah ini dengan data yang lengkap dan akurat.</li>
+                <li>Jelaskan kronologi kejadian secara rinci pada kolom keterangan.</li>
+                <li>Klik tombol "Kirim Laporan" untuk mengirimkan laporan Anda.</li>
+                <li>Anda akan menerima notifikasi jika laporan berhasil terkirim.</li>
+            </ol>
+            <p class="mt-3"><strong>Catatan:</strong> Data yang Anda input akan tersimpan secara otomatis dan tidak akan hilang meskipun halaman dimuat ulang.</p>
+        </section>
+
+        <section class="reports-section">
+            <h2><i class="bi bi-journal-text me-2"></i>Data Laporan K3RS</h2>
+            <div id="reports-container">
+                <div class="empty-reports">
+                    <i class="bi bi-inbox"></i>
+                    <p>Belum ada laporan yang tersimpan</p>
+                    <p class="small">Laporan yang Anda kirim akan ditampilkan di sini</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-section">
+            <h2><i class="bi bi-file-earmark-text-fill me-2"></i>Formulir Pelaporan K3RS</h2>
+            <form id="k3rs-form">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="reporter-name" class="form-label">Nama Pelapor</label>
+                        <input type="text" class="form-control" id="reporter-name" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="reporter-position" class="form-label">Jabatan/Posisi</label>
+                        <input type="text" class="form-control" id="reporter-position" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="reporter-department" class="form-label">Unit/Departemen</label>
+                        <select class="form-select" id="reporter-department" required>
+                            <option value="" selected disabled>Pilih Unit/Departemen</option>
+                            <option value="igd">Instalasi Gawat Darurat (IGD)</option>
+                            <option value="rawat-inap">Rawat Inap</option>
+                            <option value="rawat-jalan">Rawat Jalan</option>
+                            <option value="bedah">Kamar Bedah</option>
+                            <option value="bersalin">Kamar Bersalin</option>
+                            <option value="lab">Laboratorium</option>
+                            <option value="radiologi">Radiologi</option>
+                            <option value="farmasi">Farmasi</option>
+                            <option value="rehabilitasi">Rehabilitasi Medik</option>
+                            <option value="gizi">Instalasi Gizi</option>
+                            <option value="laundry">Laundry</option>
+                            <option value="sterilisasi">Sterilisasi Peralatan Medis</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="incident-date" class="form-label">Tanggal Kejadian</label>
+                        <input type="date" class="form-control" id="incident-date" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Jenis Insiden</label>
+                    <div class="incident-type">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="incident-fall">
+                            <label class="form-check-label" for="incident-fall">
+                                Pasien Jatuh
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="incident-medication">
+                            <label class="form-check-label" for="incident-medication">
+                                Kesalahan Obat
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="incident-pressure">
+                            <label class="form-check-label" for="incident-pressure">
+                                Luka Decubitus
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="incident-infection">
+                            <label class="form-check-label" for="incident-infection">
+                                Infeksi Nosokomial
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="incident-surgery">
+                            <label class="form-check-label" for="incident-surgery">
+                                Kesalahan Bedah
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="incident-transfusion">
+                            <label class="form-check-label" for="incident-transfusion">
+                                Transfusi Darah
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="incident-allergy">
+                            <label class="form-check-label" for="incident-allergy">
+                                Reaksi Alergi
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="incident-equipment">
+                            <label class="form-check-label" for="incident-equipment">
+                                Kerusakan Alat
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="incident-fire">
+                            <label class="form-check-label" for="incident-fire">
+                                Kebakaran
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="incident-worker">
+                            <label class="form-check-label" for="incident-worker">
+                                Cedera Pekerja
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="incident-violence">
+                            <label class="form-check-label" for="incident-violence">
+                                Kekerasan
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="incident-other">
+                            <label class="form-check-label" for="incident-other">
+                                Lainnya
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="incident-location" class="form-label">Lokasi Kejadian</label>
+                    <input type="text" class="form-control" id="incident-location" placeholder="Contoh: Ruang ICU Lantai 2" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="incident-description" class="form-label">Kronologi Kejadian</label>
+                    <textarea class="form-control" id="incident-description" rows="5" placeholder="Jelaskan secara rinci kronologi kejadian yang terjadi..." required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="patient-affected" class="form-label">Apakah ada pasien yang terdampak?</label>
+                    <select class="form-select" id="patient-affected" required>
+                        <option value="" selected disabled>Pilih Opsi</option>
+                        <option value="yes">Ya</option>
+                        <option value="no">Tidak</option>
+                    </select>
+                </div>
+
+                <div class="row mb-3" id="patient-info" style="display: none;">
+                    <div class="col-md-6">
+                        <label for="patient-name" class="form-label">Nama Pasien</label>
+                        <input type="text" class="form-control" id="patient-name">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="patient-id" class="form-label">No. RM Pasien</label>
+                        <input type="text" class="form-control" id="patient-id">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="incident-impact" class="form-label">Dampak Kejadian</label>
+                    <select class="form-select" id="incident-impact" required>
+                        <option value="" selected disabled>Pilih Dampak</option>
+                        <option value="none">Tidak Ada Dampak</option>
+                        <option value="minor">Dampak Minor (Tidak memerlukan intervensi tambahan)</option>
+                        <option value="moderate">Dampak Sedang (Memerlukan intervensi tambahan, tidak menyebabkan cedera permanen)</option>
+                        <option value="major">Dampak Mayor (Menyebabkan cedera permanen atau memerlukan intervensi intensif)</option>
+                        <option value="death">Kematian</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="action-taken" class="form-label">Tindakan yang Telah Dilakukan</label>
+                    <textarea class="form-control" id="action-taken" rows="3" placeholder="Jelaskan tindakan yang telah dilakukan pasca kejadian..."></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="suggestion" class="form-label">Saran Perbaikan</label>
+                    <textarea class="form-control" id="suggestion" rows="3" placeholder="Berikan saran untuk mencegah kejadian serupa di masa depan..."></textarea>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="anonymous">
+                    <label class="form-check-label" for="anonymous">
+                        Laporkan secara anonim
+                    </label>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="reset" class="btn btn-secondary me-md-2">
+                        <i class="bi bi-arrow-clockwise me-2"></i>Reset Form
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-send-fill me-2"></i>Kirim Laporan
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>RSUD Talaud</h5>
+                    <p>Jl. RSUD No. 1, Melonguane, Kepulauan Talaud</p>
+                    <p>Telp: (0432) 123456 | Email: info@rsudtalaud.go.id</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5>K3RS</h5>
+                    <p>Keselamatan dan Kesehatan Kerja Rumah Sakit</p>
+                    <p>&copy; 2023 RSUD Talaud. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved form data
+            loadFormData();
+            
+            // Load saved reports
+            loadReports();
+            
+            // Auto-save form data
+            const formInputs = document.querySelectorAll('#k3rs-form input, #k3rs-form textarea, #k3rs-form select');
+            formInputs.forEach(input => {
+                input.addEventListener('input', saveFormData);
+                input.addEventListener('change', saveFormData);
+            });
+            
+            // Handle patient affected field
+            document.getElementById('patient-affected').addEventListener('change', function() {
+                const patientInfo = document.getElementById('patient-info');
+                if (this.value === 'yes') {
+                    patientInfo.style.display = 'flex';
+                } else {
+                    patientInfo.style.display = 'none';
+                }
+            });
+            
+            // Handle form submission
+            document.getElementById('k3rs-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = getFormData();
+                
+                // Save report to localStorage
+                saveReport(formData);
+                
+                // Show notification
+                showNotification('Laporan berhasil dikirim! Terima kasih atas kontribusi Anda.');
+                
+                // Clear form after successful submission
+                setTimeout(() => {
+                    this.reset();
+                    document.getElementById('patient-info').style.display = 'none';
+                    localStorage.removeItem('k3rs-form-data');
+                }, 2000);
+            });
+            
+            // Handle reset button
+            document.querySelector('button[type="reset"]').addEventListener('click', function() {
+                localStorage.removeItem('k3rs-form-data');
+                document.getElementById('patient-info').style.display = 'none';
+            });
+        });
+        
+        function getFormData() {
+            const incidentTypes = [];
+            
+            // Get checked incident types
+            const incidentCheckboxes = document.querySelectorAll('.incident-type .form-check-input');
+            incidentCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const label = document.querySelector(`label[for="${checkbox.id}"]`).textContent;
+                    incidentTypes.push(label);
+                }
+            });
+            
+            // Get department name
+            const departmentSelect = document.getElementById('reporter-department');
+            const departmentName = departmentSelect.options[departmentSelect.selectedIndex].text;
+            
+            // Get impact name
+            const impactSelect = document.getElementById('incident-impact');
+            const impactName = impactSelect.options[impactSelect.selectedIndex].text;
+            
+            // Get patient affected status
+            const patientAffectedSelect = document.getElementById('patient-affected');
+            const patientAffectedName = patientAffectedSelect.options[patientAffectedSelect.selectedIndex].text;
+            
+            return {
+                id: Date.now(),
+                reporterName: document.getElementById('reporter-name').value,
+                reporterPosition: document.getElementById('reporter-position').value,
+                reporterDepartment: departmentName,
+                incidentDate: document.getElementById('incident-date').value,
+                incidentTypes: incidentTypes,
+                incidentLocation: document.getElementById('incident-location').value,
+                incidentDescription: document.getElementById('incident-description').value,
+                patientAffected: patientAffectedName,
+                patientName: document.getElementById('patient-name').value,
+                patientId: document.getElementById('patient-id').value,
+                incidentImpact: impactName,
+                actionTaken: document.getElementById('action-taken').value,
+                suggestion: document.getElementById('suggestion').value,
+                isAnonymous: document.getElementById('anonymous').checked,
+                reportDate: new Date().toISOString(),
+                status: 'new'
+            };
+        }
+        
+        function saveReport(reportData) {
+            // Get existing reports
+            let reports = JSON.parse(localStorage.getItem('k3rs-reports')) || [];
+            
+            // Add new report
+            reports.unshift(reportData);
+            
+            // Save to localStorage
+            localStorage.setItem('k3rs-reports', JSON.stringify(reports));
+            
+            // Update reports display
+            displayReports(reports);
+        }
+        
+        function loadReports() {
+            const reports = JSON.parse(localStorage.getItem('k3rs-reports')) || [];
+            displayReports(reports);
+        }
+        
+        function displayReports(reports) {
+            const container = document.getElementById('reports-container');
+            
+            if (reports.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-reports">
+                        <i class="bi bi-inbox"></i>
+                        <p>Belum ada laporan yang tersimpan</p>
+                        <p class="small">Laporan yang Anda kirim akan ditampilkan di sini</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            
+            reports.forEach(report => {
+                const reportDate = new Date(report.reportDate).toLocaleDateString('id-ID');
+                const incidentDate = new Date(report.incidentDate).toLocaleDateString('id-ID');
+                
+                // Determine status class
+                let statusClass = 'status-new';
+                if (report.status === 'processing') {
+                    statusClass = 'status-processing';
+                } else if (report.status === 'resolved') {
+                    statusClass = 'status-resolved';
+                }
+                
+                // Format incident types
+                const incidentTypesText = report.incidentTypes.length > 0 
+                    ? report.incidentTypes.join(', ') 
+                    : 'Tidak ada jenis insiden yang dipilih';
+                
+                html += `
+                    <div class="report-card">
+                        <div class="report-header">
+                            <div class="report-date">Laporan #${report.id} - ${reportDate}</div>
+                            <div class="report-status ${statusClass}">${getStatusText(report.status)}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <strong>Pelapor:</strong> ${report.isAnonymous ? 'Anonim' : report.reporterName}
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Unit/Departemen:</strong> ${report.reporterDepartment}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <strong>Tanggal Kejadian:</strong> ${incidentDate}
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Lokasi:</strong> ${report.incidentLocation}
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <strong>Jenis Insiden:</strong> ${incidentTypesText}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Kronologi:</strong> ${report.incidentDescription.length > 100 
+                                ? report.incidentDescription.substring(0, 100) + '...' 
+                                : report.incidentDescription}
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <strong>Pasien Terdampak:</strong> ${report.patientAffected}
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Dampak:</strong> ${report.incidentImpact}
+                            </div>
+                        </div>
+                        ${report.patientName ? `
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <strong>Nama Pasien:</strong> ${report.patientName}
+                            </div>
+                            <div class="col-md-6">
+                                <strong>No. RM:</strong> ${report.patientId}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function getStatusText(status) {
+            switch(status) {
+                case 'new':
+                    return 'Baru';
+                case 'processing':
+                    return 'Diproses';
+                case 'resolved':
+                    return 'Selesai';
+                default:
+                    return 'Baru';
+            }
+        }
+        
+        function saveFormData() {
+            const formData = {};
+            const formInputs = document.querySelectorAll('#k3rs-form input, #k3rs-form textarea, #k3rs-form select');
+            
+            formInputs.forEach(input => {
+                if (input.type === 'checkbox') {
+                    formData[input.id] = input.checked;
+                } else {
+                    formData[input.id] = input.value;
+                }
+            });
+            
+            localStorage.setItem('k3rs-form-data', JSON.stringify(formData));
+        }
+        
+        function loadFormData() {
+            const savedData = localStorage.getItem('k3rs-form-data');
+            
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                
+                Object.keys(formData).forEach(key => {
+                    const input = document.getElementById(key);
+                    if (input) {
+                        if (input.type === 'checkbox') {
+                            input.checked = formData[key];
+                        } else {
+                            input.value = formData[key];
+                        }
+                    }
+                });
+                
+                // Handle patient affected field
+                const patientAffected = document.getElementById('patient-affected').value;
+                if (patientAffected === 'yes') {
+                    document.getElementById('patient-info').style.display = 'flex';
+                }
+            }
+        }
+        
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            notificationText.textContent = message;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
