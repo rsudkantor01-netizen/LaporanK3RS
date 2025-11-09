@@ -133,6 +133,10 @@
             border-color: #0d6efd;
             box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
         }
+        .form-control[readonly] {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
         .btn-primary {
             background-color: #0d6efd;
             border-color: #0d6efd;
@@ -171,6 +175,28 @@
             .incident-type .form-check {
                 flex: 0 0 100%;
             }
+        }
+        .suggestion-box {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        .suggestion-title {
+            font-weight: bold;
+            color: #0d6efd;
+            margin-bottom: 5px;
+        }
+        .ai-badge {
+            background-color: #0d6efd;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 5px;
         }
     </style>
 </head>
@@ -246,6 +272,7 @@
             <ol>
                 <li>Isi formulir pelaporan di bawah ini dengan data yang lengkap dan akurat.</li>
                 <li>Jelaskan kronologi kejadian secara rinci pada kolom keterangan.</li>
+                <li>Sistem akan secara otomatis memberikan saran perbaikan berdasarkan data yang diinput.</li>
                 <li>Klik tombol "Kirim Laporan" untuk mengirimkan laporan Anda.</li>
                 <li>Anda akan menerima notifikasi jika laporan berhasil terkirim.</li>
             </ol>
@@ -267,40 +294,15 @@
             <h2><i class="bi bi-file-earmark-text-fill me-2"></i>Formulir Pelaporan K3RS</h2>
             <form id="k3rs-form">
                 <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label for="reporter-name" class="form-label">Nama Pelapor</label>
-                        <input type="text" class="form-control" id="reporter-name" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="reporter-position" class="form-label">Jabatan/Posisi</label>
-                        <input type="text" class="form-control" id="reporter-position" required>
+                        <input type="text" class="form-control" id="reporter-name" value="K3RS" readonly>
                     </div>
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="reporter-department" class="form-label">Unit/Departemen</label>
-                        <select class="form-select" id="reporter-department" required>
-                            <option value="" selected disabled>Pilih Unit/Departemen</option>
-                            <option value="igd">Instalasi Gawat Darurat (IGD)</option>
-                            <option value="rawat-inap">Rawat Inap</option>
-                            <option value="rawat-jalan">Rawat Jalan</option>
-                            <option value="bedah">Kamar Bedah</option>
-                            <option value="bersalin">Kamar Bersalin</option>
-                            <option value="lab">Laboratorium</option>
-                            <option value="radiologi">Radiologi</option>
-                            <option value="farmasi">Farmasi</option>
-                            <option value="rehabilitasi">Rehabilitasi Medik</option>
-                            <option value="gizi">Instalasi Gizi</option>
-                            <option value="laundry">Laundry</option>
-                            <option value="sterilisasi">Sterilisasi Peralatan Medis</option>
-                            <option value="lainnya">Lainnya</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="incident-date" class="form-label">Tanggal Kejadian</label>
-                        <input type="date" class="form-control" id="incident-date" required>
-                    </div>
+                <div class="mb-3">
+                    <label for="incident-date" class="form-label">Tanggal Kejadian</label>
+                    <input type="date" class="form-control" id="incident-date" required>
                 </div>
 
                 <div class="mb-3">
@@ -383,7 +385,33 @@
 
                 <div class="mb-3">
                     <label for="incident-location" class="form-label">Lokasi Kejadian</label>
-                    <input type="text" class="form-control" id="incident-location" placeholder="Contoh: Ruang ICU Lantai 2" required>
+                    <select class="form-select" id="incident-location" required>
+                        <option value="" selected disabled>Pilih Lokasi Kejadian</option>
+                        <option value="ANGGREK">ANGGREK</option>
+                        <option value="APOTEK/FARMASI">APOTEK/FARMASI</option>
+                        <option value="BINATU">BINATU</option>
+                        <option value="CRYSANT">CRYSANT</option>
+                        <option value="DAHLIA">DAHLIA</option>
+                        <option value="EDELWEIS">EDELWEIS</option>
+                        <option value="FISIOTERAPI">FISIOTERAPI</option>
+                        <option value="GUDANG APOTEK">GUDANG APOTEK</option>
+                        <option value="IBS">IBS</option>
+                        <option value="ICU">ICU</option>
+                        <option value="IGD">IGD</option>
+                        <option value="IGD VK">IGD VK</option>
+                        <option value="INSTALASI GIZI">INSTALASI GIZI</option>
+                        <option value="IPSRS">IPSRS</option>
+                        <option value="ISOLASI">ISOLASI</option>
+                        <option value="KANTOR">KANTOR</option>
+                        <option value="LABORATORIUM">LABORATORIUM</option>
+                        <option value="MEDREC">MEDREC</option>
+                        <option value="NICU">NICU</option>
+                        <option value="PEMULASARAN JENAZAH">PEMULASARAN JENAZAH</option>
+                        <option value="POLIKLINIK">POLIKLINIK</option>
+                        <option value="POS SATPAM">POS SATPAM</option>
+                        <option value="RADIOLODI">RADIOLODI</option>
+                        <option value="UNIT TRANSFUSI DARAH">UNIT TRANSFUSI DARAH</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">
@@ -429,15 +457,12 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="suggestion" class="form-label">Saran Perbaikan</label>
-                    <textarea class="form-control" id="suggestion" rows="3" placeholder="Berikan saran untuk mencegah kejadian serupa di masa depan..."></textarea>
-                </div>
-
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="anonymous">
-                    <label class="form-check-label" for="anonymous">
-                        Laporkan secara anonim
-                    </label>
+                    <label for="suggestion" class="form-label">Saran Perbaikan <span class="ai-badge">AI Generated</span></label>
+                    <textarea class="form-control" id="suggestion" rows="3" placeholder="Saran perbaikan akan muncul otomatis setelah semua data diinput..." readonly></textarea>
+                    <div id="suggestion-box" class="suggestion-box" style="display: none;">
+                        <div class="suggestion-title">Saran Otomatis:</div>
+                        <div id="suggestion-content"></div>
+                    </div>
                 </div>
 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -472,17 +497,28 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Set reporter name to "K3RS" and make it readonly
+            const reporterNameInput = document.getElementById('reporter-name');
+            reporterNameInput.value = 'K3RS';
+            reporterNameInput.setAttribute('readonly', true);
+            
             // Load saved form data
             loadFormData();
             
             // Load saved reports
             loadReports();
             
-            // Auto-save form data
-            const formInputs = document.querySelectorAll('#k3rs-form input, #k3rs-form textarea, #k3rs-form select');
+            // Auto-save form data (excluding reporter name and suggestion)
+            const formInputs = document.querySelectorAll('#k3rs-form input:not([readonly]), #k3rs-form textarea:not(#suggestion), #k3rs-form select');
             formInputs.forEach(input => {
-                input.addEventListener('input', saveFormData);
-                input.addEventListener('change', saveFormData);
+                input.addEventListener('input', function() {
+                    saveFormData();
+                    generateSuggestion();
+                });
+                input.addEventListener('change', function() {
+                    saveFormData();
+                    generateSuggestion();
+                });
             });
             
             // Handle patient affected field
@@ -511,7 +547,11 @@
                 // Clear form after successful submission
                 setTimeout(() => {
                     this.reset();
+                    // Reset reporter name to "K3RS"
+                    document.getElementById('reporter-name').value = 'K3RS';
                     document.getElementById('patient-info').style.display = 'none';
+                    document.getElementById('suggestion').value = '';
+                    document.getElementById('suggestion-box').style.display = 'none';
                     localStorage.removeItem('k3rs-form-data');
                 }, 2000);
             });
@@ -520,24 +560,151 @@
             document.querySelector('button[type="reset"]').addEventListener('click', function() {
                 localStorage.removeItem('k3rs-form-data');
                 document.getElementById('patient-info').style.display = 'none';
+                document.getElementById('suggestion').value = '';
+                document.getElementById('suggestion-box').style.display = 'none';
+                // Reset reporter name to "K3RS"
+                setTimeout(() => {
+                    document.getElementById('reporter-name').value = 'K3RS';
+                }, 10);
             });
         });
         
-        function getFormData() {
-            const incidentTypes = [];
+        function generateSuggestion() {
+            const incidentTypes = getSelectedIncidentTypes();
+            const location = document.getElementById('incident-location').value;
+            const impact = document.getElementById('incident-impact').value;
+            const description = document.getElementById('incident-description').value;
+            const patientAffected = document.getElementById('patient-affected').value;
             
-            // Get checked incident types
-            const incidentCheckboxes = document.querySelectorAll('.incident-type .form-check-input');
+            if (incidentTypes.length === 0 || !location || !impact || !description) {
+                document.getElementById('suggestion').value = '';
+                document.getElementById('suggestion-box').style.display = 'none';
+                return;
+            }
+            
+            let suggestion = '';
+            const suggestionBox = document.getElementById('suggestion-box');
+            const suggestionContent = document.getElementById('suggestion-content');
+            
+            // Generate specific suggestions based on incident types
+            if (incidentTypes.includes('Pasien Jatuh')) {
+                suggestion += '1. Pasang pagar tempat tidur dan pastikan dalam kondisi baik.\n';
+                suggestion += '2. Berikan alas anti-slip di lantai kamar mandi.\n';
+                suggestion += '3. Pastikan pencahayaan cukup di area pasien.\n';
+                suggestion += '4. Lakukan assessment risiko jatuh secara rutin.\n';
+            }
+            
+            if (incidentTypes.includes('Kesalahan Obat')) {
+                suggestion += '1. Implementasikan sistem "five rights" dalam pemberian obat.\n';
+                suggestion += '2. Gunakan barcode scanning untuk verifikasi obat.\n';
+                suggestion += '3. Tingkatkan pelatihan untuk petugas farmasi dan perawat.\n';
+                suggestion += '4. Evaluasi ulang proses kompounding dan dispensing obat.\n';
+            }
+            
+            if (incidentTypes.includes('Luka Decubitus')) {
+                suggestion += '1. Lakukan rotasi pasien setiap 2 jam sekali.\n';
+                suggestion += '2. Gunakan matras anti-decubitus untuk pasien berisiko tinggi.\n';
+                suggestion += '3. Lakukan assessment kulit secara rutin.\n';
+                suggestion += '4. Tingkatkan nutrisi dan hidrasi pasien.\n';
+            }
+            
+            if (incidentTypes.includes('Infeksi Nosokomial')) {
+                suggestion += '1. Tingkatkan kepatuhan cuci tangan dengan hand rub.\n';
+                suggestion += '2. Implementasikan contact precaution untuk infeksi tertentu.\n';
+                suggestion += '3. Pastikan sterilisasi alat medis sesuai protokol.\n';
+                suggestion += '4. Edukasi pengunjung tentang etika batuk dan higienitas.\n';
+            }
+            
+            if (incidentTypes.includes('Kesalahan Bedah')) {
+                suggestion += '1. Implementasikan surgical safety checklist WHO.\n';
+                suggestion += '2. Lakukan "time out" sebelum insisi.\n';
+                suggestion += '3. Verifikasi identitas pasien dan prosedur bedah.\n';
+                suggestion += '4. Dokumentasikan semua alat dan bahan yang digunakan.\n';
+            }
+            
+            if (incidentTypes.includes('Kerusakan Alat')) {
+                suggestion += '1. Jadwalkan maintenance preventif secara berkala.\n';
+                suggestion += '2. Buat SOP penggunaan dan perawatan alat medis.\n';
+                suggestion += '3. Latih staf penggunaan alat yang benar.\n';
+                suggestion += '4. Siapkan alat cadangan untuk kasus darurat.\n';
+            }
+            
+            if (incidentTypes.includes('Kebakaran')) {
+                suggestion += '1. Pasang alarm dan detektor asap yang berfungsi.\n';
+                suggestion += '2. Sediakan APAR di lokasi strategis dan mudah diakses.\n';
+                suggestion += '3. Lakukan simulasi evakuasi kebakaran rutin.\n';
+                suggestion += '4. Periksa instalasi listrik secara berkala.\n';
+            }
+            
+            if (incidentTypes.includes('Cedera Pekerja')) {
+                suggestion += '1. Sediakan APD yang sesuai dengan risiko pekerjaan.\n';
+                suggestion += '2. Lakukan pelatihan K3 secara berkala.\n';
+                suggestion += '3. Implementasikan ergonomi di tempat kerja.\n';
+                suggestion += '4. Buat sistem pelaporan cedera kerja yang mudah diakses.\n';
+            }
+            
+            if (incidentTypes.includes('Kekerasan')) {
+                suggestion += '1. Pasang CCTV di area rawat jalan dan IGD.\n';
+                suggestion += '2. Latih staf dalam de-eskalasi konflik.\n';
+                suggestion += '3. Implementasikan sistem keamanan berlapis.\n';
+                suggestion += '4. Buat kebijakan toleransi nol terhadap kekerasan.\n';
+            }
+            
+            // Add general suggestions based on impact
+            if (impact === 'major' || impact === 'death') {
+                suggestion += '\n5. Lakukan root cause analysis (RCA) untuk insiden ini.\n';
+                suggestion += '6. Bentuk tim investigasi multidisiplin.\n';
+                suggestion += '7. Segera laporkan ke manajemen dan komite K3RS.\n';
+                suggestion += '8. Evaluasi ulang seluruh sistem keselamatan di unit terkait.\n';
+            }
+            
+            // Add location-specific suggestions
+            if (location === 'ICU' || location === 'NICU') {
+                suggestion += '\n9. Tingkatkan rasio perawat-pasien di unit perawatan intensif.\n';
+                suggestion += '10. Implementasikan monitor vital signs terintegrasi.\n';
+            }
+            
+            if (location === 'IGD' || location === 'IGD VK') {
+                suggestion += '\n9. Perbaiki sistem triage di IGD.\n';
+                suggestion += '10. Tingkatkan komunikasi antar unit untuk transfer pasien.\n';
+            }
+            
+            if (location === 'LABORATORIUM') {
+                suggestion += '\n9. Tingkatkan kepatuhan penggunaan APD di laboratorium.\n';
+                suggestion += '10. Perbaiki sistem pelabelan dan transportasi spesimen.\n';
+            }
+            
+            if (location === 'APOTEK/FARMASI' || location === 'GUDANG APOTEK') {
+                suggestion += '\n9. Implementasikan sistem barcode untuk semua obat.\n';
+                suggestion += '10. Pisahkan area penyimpanan obat dengan suhu berbeda.\n';
+            }
+            
+            // Add patient-specific suggestions
+            if (patientAffected === 'yes') {
+                suggestion += '\n11. Berikan dukungan psikologis untuk pasien dan keluarga.\n';
+                suggestion += '12. Jelaskan kronologi kejadian secara transparan.\n';
+            }
+            
+            // Set suggestion
+            document.getElementById('suggestion').value = suggestion;
+            suggestionContent.textContent = suggestion;
+            suggestionBox.style.display = 'block';
+        }
+        
+        function getSelectedIncidentTypes() {
+            const incidentTypes = [];
+            const incidentCheckboxes = document.querySelectorAll('.incident-type .form-check-input:checked');
+            
             incidentCheckboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    const label = document.querySelector(`label[for="${checkbox.id}"]`).textContent;
-                    incidentTypes.push(label);
-                }
+                const label = document.querySelector(`label[for="${checkbox.id}"]`).textContent;
+                incidentTypes.push(label);
             });
             
-            // Get department name
-            const departmentSelect = document.getElementById('reporter-department');
-            const departmentName = departmentSelect.options[departmentSelect.selectedIndex].text;
+            return incidentTypes;
+        }
+        
+        function getFormData() {
+            const incidentTypes = getSelectedIncidentTypes();
             
             // Get impact name
             const impactSelect = document.getElementById('incident-impact');
@@ -547,14 +714,16 @@
             const patientAffectedSelect = document.getElementById('patient-affected');
             const patientAffectedName = patientAffectedSelect.options[patientAffectedSelect.selectedIndex].text;
             
+            // Get location name
+            const locationSelect = document.getElementById('incident-location');
+            const locationName = locationSelect.options[locationSelect.selectedIndex].text;
+            
             return {
                 id: Date.now(),
                 reporterName: document.getElementById('reporter-name').value,
-                reporterPosition: document.getElementById('reporter-position').value,
-                reporterDepartment: departmentName,
                 incidentDate: document.getElementById('incident-date').value,
                 incidentTypes: incidentTypes,
-                incidentLocation: document.getElementById('incident-location').value,
+                incidentLocation: locationName,
                 incidentDescription: document.getElementById('incident-description').value,
                 patientAffected: patientAffectedName,
                 patientName: document.getElementById('patient-name').value,
@@ -562,7 +731,6 @@
                 incidentImpact: impactName,
                 actionTaken: document.getElementById('action-taken').value,
                 suggestion: document.getElementById('suggestion').value,
-                isAnonymous: document.getElementById('anonymous').checked,
                 reportDate: new Date().toISOString(),
                 status: 'new'
             };
@@ -627,18 +795,17 @@
                             <div class="report-status ${statusClass}">${getStatusText(report.status)}</div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-md-6">
-                                <strong>Pelapor:</strong> ${report.isAnonymous ? 'Anonim' : report.reporterName}
-                            </div>
-                            <div class="col-md-6">
-                                <strong>Unit/Departemen:</strong> ${report.reporterDepartment}
+                            <div class="col-md-12">
+                                <strong>Pelapor:</strong> ${report.reporterName}
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <strong>Tanggal Kejadian:</strong> ${incidentDate}
                             </div>
-                            <div class="col-md-6">
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
                                 <strong>Lokasi:</strong> ${report.incidentLocation}
                             </div>
                         </div>
@@ -658,6 +825,14 @@
                                 <strong>Dampak:</strong> ${report.incidentImpact}
                             </div>
                         </div>
+                        ${report.suggestion ? `
+                        <div class="mb-2">
+                            <strong>Saran Perbaikan:</strong> <span class="ai-badge">AI Generated</span><br>
+                            ${report.suggestion.length > 100 
+                                ? report.suggestion.substring(0, 100) + '...' 
+                                : report.suggestion}
+                        </div>
+                        ` : ''}
                         ${report.patientName ? `
                         <div class="row mb-2">
                             <div class="col-md-6">
@@ -690,7 +865,7 @@
         
         function saveFormData() {
             const formData = {};
-            const formInputs = document.querySelectorAll('#k3rs-form input, #k3rs-form textarea, #k3rs-form select');
+            const formInputs = document.querySelectorAll('#k3rs-form input:not([readonly]), #k3rs-form textarea:not(#suggestion), #k3rs-form select');
             
             formInputs.forEach(input => {
                 if (input.type === 'checkbox') {
@@ -725,6 +900,11 @@
                 if (patientAffected === 'yes') {
                     document.getElementById('patient-info').style.display = 'flex';
                 }
+                
+                // Generate suggestion after loading form data
+                setTimeout(() => {
+                    generateSuggestion();
+                }, 100);
             }
         }
         
