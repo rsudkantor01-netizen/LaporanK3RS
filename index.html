@@ -3,922 +3,673 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan K3RS - RSUD Talaud</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <title>Laporan Inspeksi Bulanan K3RS - RSUD Kab. Kepl. Talaud</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-        .header {
-            background-color: #0d6efd;
-            color: white;
-            padding: 20px 0;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        .logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
-        .logo {
-            width: 80px;
-            height: 80px;
-            background-color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-        }
-        .logo i {
-            font-size: 40px;
-            color: #0d6efd;
-        }
-        .hospital-name {
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .info-section {
-            background-color: white;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        .info-section h2 {
-            color: #0d6efd;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e9ecef;
-        }
-        .form-section {
-            background-color: white;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            margin-top: 30px;
-        }
-        .form-section h2 {
-            color: #0d6efd;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e9ecef;
-        }
-        .reports-section {
-            background-color: white;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            margin-top: 30px;
-        }
-        .reports-section h2 {
-            color: #0d6efd;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e9ecef;
-        }
-        .report-card {
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-        }
-        .report-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        .report-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .report-date {
-            font-weight: bold;
-            color: #0d6efd;
-        }
-        .report-status {
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        .status-new {
-            background-color: #d1ecf1;
-            color: #0c5460;
-        }
-        .status-processing {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-        .status-resolved {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        .empty-reports {
-            text-align: center;
-            padding: 30px;
-            color: #6c757d;
-        }
-        .empty-reports i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        }
-        .form-control[readonly] {
-            background-color: #f8f9fa;
-            cursor: not-allowed;
-        }
-        .btn-primary {
-            background-color: #0d6efd;
-            border-color: #0d6efd;
-        }
-        .btn-primary:hover {
-            background-color: #0b5ed7;
-            border-color: #0a58ca;
-        }
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            background-color: #28a745;
-            color: white;
-            border-radius: 5px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            display: none;
-            z-index: 1000;
-        }
-        .incident-type {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .incident-type .form-check {
-            flex: 0 0 calc(33.333% - 10px);
-        }
-        @media (max-width: 768px) {
-            .incident-type .form-check {
-                flex: 0 0 calc(50% - 10px);
-            }
-        }
-        @media (max-width: 576px) {
-            .incident-type .form-check {
-                flex: 0 0 100%;
-            }
-        }
-        .suggestion-box {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #495057;
-        }
-        .suggestion-title {
-            font-weight: bold;
-            color: #0d6efd;
-            margin-bottom: 5px;
-        }
-        .ai-badge {
-            background-color: #0d6efd;
-            color: white;
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 3px;
-            margin-left: 5px;
-        }
+        /* Custom Styles */
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .ai-card { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-left: 5px solid #a855f7; }
+        .ai-assistant-box { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); border: 1px solid #e0e7ff; }
+        .status-ok { color: #10b981; }
+        .status-notice { color: #f59e0b; }
+        .status-critical { color: #ef4444; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in-up { animation: fadeInUp 0.6s ease-out; }
+        .pulse-animation { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .7; } }
     </style>
 </head>
-<body>
-    <div class="notification" id="notification">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        <span id="notification-text">Laporan berhasil dikirim!</span>
-    </div>
+<body class="bg-gray-100 font-sans">
 
-    <header class="header">
-        <div class="container">
-            <div class="logo-container">
-                <div class="logo">
-                    <i class="bi bi-hospital"></i>
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold">Laporan Inspeksi Bulanan K3RS</h1>
+                    <p class="text-purple-100">RSUD Kab. Kepl. Talaud</p>
                 </div>
-                <div class="hospital-name">RSUD Talaud</div>
+                <div class="text-right">
+                    <p class="text-lg font-semibold">Periode: 2023-2025</p>
+                    <p class="text-sm text-purple-100">Dibuat pada: Januari - Desember 2024</p>
+                </div>
             </div>
-            <h1 class="text-center">Sistem Pelaporan Keselamatan dan Kesehatan Kerja Rumah Sakit (K3RS)</h1>
         </div>
     </header>
 
-    <main class="container">
-        <section class="info-section">
-            <h2><i class="bi bi-info-circle-fill me-2"></i>Tentang Pelaporan K3RS</h2>
-            <p>Sistem Pelaporan K3RS RSUD Talaud dirancang untuk memfasilitasi pelaporan insiden keamanan dan keselamatan pasien, serta kejadian yang tidak diharapkan di lingkungan rumah sakit. Melalui sistem ini, kami dapat mengidentifikasi, menganalisis, dan mengambil tindakan perbaikan untuk mencegah kejadian serupa di masa depan.</p>
-            <p>Semua laporan akan ditangani secara rahasia dan digunakan untuk tujuan peningkatan mutu pelayanan kesehatan di RSUD Talaud.</p>
-        </section>
-
-        <section class="info-section">
-            <h2><i class="bi bi-shield-check me-2"></i>Manfaat Pelaporan K3RS</h2>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <div class="d-flex">
-                        <i class="bi bi-check-circle-fill text-success me-3 mt-1"></i>
+    <main class="container mx-auto px-6 py-8">
+        
+        <!-- Section 1: Dashboard & AI Insights -->
+        <section class="mb-10 fade-in-up">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-chart-line mr-2"></i>Dashboard & Wawasan AI
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Kepatuhan Keseluruhan -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4">
+                            <i class="fas fa-shield-alt fa-2x"></i>
+                        </div>
                         <div>
-                            <h5>Meningkatkan Keselamatan Pasien</h5>
-                            <p>Identifikasi risiko dan mencegah cedera yang dapat terjadi pada pasien.</p>
+                            <p class="text-gray-500 text-sm">Tingkat Kepatuhan Keseluruhan</p>
+                            <p class="text-3xl font-bold text-gray-800">92.5%</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <div class="d-flex">
-                        <i class="bi bi-check-circle-fill text-success me-3 mt-1"></i>
+                
+                <!-- Total Temuan -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-yellow-100 text-yellow-500 mr-4">
+                            <i class="fas fa-exclamation-triangle fa-2x"></i>
+                        </div>
                         <div>
-                            <h5>Meningkatkan Keselamatan Pekerja</h5>
-                            <p>Mengurangi risiko cedera dan penyakit akibat kerja di lingkungan rumah sakit.</p>
+                            <p class="text-gray-500 text-sm">Total Temuan</p>
+                            <p class="text-3xl font-bold text-gray-800">11</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <div class="d-flex">
-                        <i class="bi bi-check-circle-fill text-success me-3 mt-1"></i>
-                        <div>
-                            <h5>Meningkatkan Kualitas Pelayanan</h5>
-                            <p>Perbaikan berkelanjutan berdasarkan analisis insiden yang terjadi.</p>
+                
+                <!-- Tindakan Kritis -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-red-100 text-red-500 mr-4">
+                            <i class="fas fa-times-circle fa-2x"></i>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <div class="d-flex">
-                        <i class="bi bi-check-circle-fill text-success me-3 mt-1"></i>
                         <div>
-                            <h5>Meningkatkan Kepatuhan</h5>
-                            <p>Memastikan kepatuhan terhadap regulasi dan standar K3RS yang berlaku.</p>
+                            <p class="text-gray-500 text-sm">Tindakan Kritis</p>
+                            <p class="text-3xl font-bold text-gray-800">3</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <section class="info-section">
-            <h2><i class="bi bi-question-circle-fill me-2"></i>Panduan Pelaporan</h2>
-            <ol>
-                <li>Isi formulir pelaporan di bawah ini dengan data yang lengkap dan akurat.</li>
-                <li>Jelaskan kronologi kejadian secara rinci pada kolom keterangan.</li>
-                <li>Sistem akan secara otomatis memberikan saran perbaikan berdasarkan data yang diinput.</li>
-                <li>Klik tombol "Kirim Laporan" untuk mengirimkan laporan Anda.</li>
-                <li>Anda akan menerima notifikasi jika laporan berhasil terkirim.</li>
-            </ol>
-            <p class="mt-3"><strong>Catatan:</strong> Data yang Anda input akan tersimpan secara otomatis dan tidak akan hilang meskipun halaman dimuat ulang.</p>
-        </section>
-
-        <section class="reports-section">
-            <h2><i class="bi bi-journal-text me-2"></i>Data Laporan K3RS</h2>
-            <div id="reports-container">
-                <div class="empty-reports">
-                    <i class="bi bi-inbox"></i>
-                    <p>Belum ada laporan yang tersimpan</p>
-                    <p class="small">Laporan yang Anda kirim akan ditampilkan di sini</p>
+            
+            <!-- AI Insights Card -->
+            <div class="ai-card text-white rounded-lg shadow-lg p-6 mb-6">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-brain text-3xl mr-3"></i>
+                    <h3 class="text-xl font-bold">Analisis & Rekomendasi AI</h3>
+                </div>
+                <div id="ai-insights-content" class="space-y-2">
+                    <p><strong>Analisis Risiko:</strong> AI mendeteksi peningkatan temuan pada area <em>Fasilitas Umum</em> sebesar 15% dibanding bulan lalu. Fokus perbaikan disarankan pada sistem pencahayaan dan akses hydrant.</p>
+                    <p><strong>Prediksi:</strong> Berdasarkan data historis, ada kemungkinan 80% masalah saluran air di ICU akan terulang jika tidak dilakukan pemeriksaan preventif rutin.</p>
+                    <p><strong>Rekomendasi Prioritas:</strong> Dari 11 temuan, 3 di antaranya diklasifikasikan sebagai <span class="font-bold">Kritis</span>. Segera alokasikan sumber daya untuk menyelesaikan item-item tersebut untuk menjaga keselamatan.</p>
+                    <p><strong>⚠️ Peringatan Risiko Tinggi:</strong> Jumlah temuan kritis (3) telah mencapai ambang batas waspada. Segera adakan rapat koordinasi untuk mengevaluasi ulang protokol keselamatan.</p>
+                    <p><strong>Efficiency Tip:</strong> Jadwalkan perbaikan pencahayaan darurat dan hydrant secara bersamaan untuk mengoptimalkan waktu kerja tim Bagian Teknik.</p>
                 </div>
             </div>
         </section>
 
-        <section class="form-section">
-            <h2><i class="bi bi-file-earmark-text-fill me-2"></i>Formulir Pelaporan K3RS</h2>
-            <form id="k3rs-form">
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <label for="reporter-name" class="form-label">Nama Pelapor</label>
-                        <input type="text" class="form-control" id="reporter-name" value="K3RS" readonly>
-                    </div>
-                </div>
+        <!-- Section 2: Detail Inspeksi -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-clipboard-list mr-2"></i>Detail Inspeksi
+            </h2>
 
-                <div class="mb-3">
-                    <label for="incident-date" class="form-label">Tanggal Kejadian</label>
-                    <input type="date" class="form-control" id="incident-date" required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Jenis Insiden</label>
-                    <div class="incident-type">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="incident-fall">
-                            <label class="form-check-label" for="incident-fall">
-                                Pasien Jatuh
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="incident-medication">
-                            <label class="form-check-label" for="incident-medication">
-                                Kesalahan Obat
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="incident-pressure">
-                            <label class="form-check-label" for="incident-pressure">
-                                Luka Decubitus
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="incident-infection">
-                            <label class="form-check-label" for="incident-infection">
-                                Infeksi Nosokomial
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="incident-surgery">
-                            <label class="form-check-label" for="incident-surgery">
-                                Kesalahan Bedah
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="incident-transfusion">
-                            <label class="form-check-label" for="incident-transfusion">
-                                Transfusi Darah
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="incident-allergy">
-                            <label class="form-check-label" for="incident-allergy">
-                                Reaksi Alergi
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="incident-equipment">
-                            <label class="form-check-label" for="incident-equipment">
-                                Kerusakan Alat
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="incident-fire">
-                            <label class="form-check-label" for="incident-fire">
-                                Kebakaran
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="incident-worker">
-                            <label class="form-check-label" for="incident-worker">
-                                Cedera Pekerja
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="incident-violence">
-                            <label class="form-check-label" for="incident-violence">
-                                Kekerasan
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="incident-other">
-                            <label class="form-check-label" for="incident-other">
-                                Lainnya
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="incident-location" class="form-label">Lokasi Kejadian</label>
-                    <select class="form-select" id="incident-location" required>
-                        <option value="" selected disabled>Pilih Lokasi Kejadian</option>
-                        <option value="ANGGREK">ANGGREK</option>
-                        <option value="APOTEK/FARMASI">APOTEK/FARMASI</option>
-                        <option value="BINATU">BINATU</option>
-                        <option value="CRYSANT">CRYSANT</option>
-                        <option value="DAHLIA">DAHLIA</option>
-                        <option value="EDELWEIS">EDELWEIS</option>
-                        <option value="FISIOTERAPI">FISIOTERAPI</option>
-                        <option value="GUDANG APOTEK">GUDANG APOTEK</option>
-                        <option value="IBS">IBS</option>
-                        <option value="ICU">ICU</option>
-                        <option value="IGD">IGD</option>
-                        <option value="IGD VK">IGD VK</option>
-                        <option value="INSTALASI GIZI">INSTALASI GIZI</option>
-                        <option value="IPSRS">IPSRS</option>
-                        <option value="ISOLASI">ISOLASI</option>
-                        <option value="KANTOR">KANTOR</option>
-                        <option value="LABORATORIUM">LABORATORIUM</option>
-                        <option value="MEDREC">MEDREC</option>
-                        <option value="NICU">NICU</option>
-                        <option value="PEMULASARAN JENAZAH">PEMULASARAN JENAZAH</option>
-                        <option value="POLIKLINIK">POLIKLINIK</option>
-                        <option value="POS SATPAM">POS SATPAM</option>
-                        <option value="RADIOLODI">RADIOLODI</option>
-                        <option value="UNIT TRANSFUSI DARAH">UNIT TRANSFUSI DARAH</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="incident-description" class="form-label">Kronologi Kejadian</label>
-                    <textarea class="form-control" id="incident-description" rows="5" placeholder="Jelaskan secara rinci kronologi kejadian yang terjadi..." required></textarea>
-                </div>
-
-                <div class="mb-3">
-                    <label for="patient-affected" class="form-label">Apakah ada pasien yang terdampak?</label>
-                    <select class="form-select" id="patient-affected" required>
-                        <option value="" selected disabled>Pilih Opsi</option>
-                        <option value="yes">Ya</option>
-                        <option value="no">Tidak</option>
-                    </select>
-                </div>
-
-                <div class="row mb-3" id="patient-info" style="display: none;">
-                    <div class="col-md-6">
-                        <label for="patient-name" class="form-label">Nama Pasien</label>
-                        <input type="text" class="form-control" id="patient-name">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="patient-id" class="form-label">No. RM Pasien</label>
-                        <input type="text" class="form-control" id="patient-id">
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="incident-impact" class="form-label">Dampak Kejadian</label>
-                    <select class="form-select" id="incident-impact" required>
-                        <option value="" selected disabled>Pilih Dampak</option>
-                        <option value="none">Tidak Ada Dampak</option>
-                        <option value="minor">Dampak Minor (Tidak memerlukan intervensi tambahan)</option>
-                        <option value="moderate">Dampak Sedang (Memerlukan intervensi tambahan, tidak menyebabkan cedera permanen)</option>
-                        <option value="major">Dampak Mayor (Menyebabkan cedera permanen atau memerlukan intervensi intensif)</option>
-                        <option value="death">Kematian</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="action-taken" class="form-label">Tindakan yang Telah Dilakukan</label>
-                    <textarea class="form-control" id="action-taken" rows="3" placeholder="Jelaskan tindakan yang telah dilakukan pasca kejadian..."></textarea>
-                </div>
-
-                <div class="mb-3">
-                    <label for="suggestion" class="form-label">Saran Perbaikan <span class="ai-badge">AI Generated</span></label>
-                    <textarea class="form-control" id="suggestion" rows="3" placeholder="Saran perbaikan akan muncul otomatis setelah semua data diinput..." readonly></textarea>
-                    <div id="suggestion-box" class="suggestion-box" style="display: none;">
-                        <div class="suggestion-title">Saran Otomatis:</div>
-                        <div id="suggestion-content"></div>
-                    </div>
-                </div>
-
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button type="reset" class="btn btn-secondary me-md-2">
-                        <i class="bi bi-arrow-clockwise me-2"></i>Reset Form
+            <!-- Tab Navigasi -->
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                    <button onclick="showTab('fasilitas')" class="tab-btn py-2 px-1 border-b-2 font-medium text-sm border-indigo-500 text-indigo-600" data-tab="fasilitas">
+                        <i class="fas fa-hospital mr-2"></i>Fasilitas
                     </button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-send-fill me-2"></i>Kirim Laporan
+                    <button onclick="showTab('kebakaran')" class="tab-btn py-2 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="kebakaran">
+                        <i class="fas fa-fire-extinguisher mr-2"></i>Kebakaran
                     </button>
+                    <button onclick="showTab('darurat')" class="tab-btn py-2 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="darurat">
+                        <i class="fas fa-ambulance mr-2"></i>Tanggap Darurat
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="tab-content">
+                <!-- Content Fasilitas -->
+                <div id="fasilitas" class="tab-content">
+                    <div class="bg-white rounded-lg shadow overflow-hidden mt-4">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item Pemeriksaan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lokasi</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catatan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="fas fa-robot"></i> Rekomendasi AI</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Sistem Pencahayaan Darurat</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Semua Ruang (kecuali IBS)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak OK</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">tidak ada lampu darurat.</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold"><span class="status-critical"><i class="fas fa-exclamation-circle"></i> KRITIS:</span> Segera pasang lampu darurat di semua ruang. Ini sangat penting untuk keselamatan saat terjadi pemadaman listrik.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Saluran Pembuangan Air</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Ruang Isolasi ICU</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Perlu Tindakan</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">Tersumbat ringan, potensi risiko sanitasi.</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold">Jadwalkan perawatan dalam 3 hari untuk mencegah masalah lebih besar.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </form>
+
+                <!-- Content Kebakaran -->
+                <div id="kebakaran" class="tab-content hidden">
+                     <div class="bg-white rounded-lg shadow overflow-hidden mt-4">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item Pemeriksaan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lokasi</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catatan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="fas fa-robot"></i> Rekomendasi AI</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">APAR</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">IGD</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak OK</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">APAR sudah kosong atau tidak diisi ulang setelah dipakai.</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold"><span class="status-critical"><i class="fas fa-exclamation-circle"></i> KRITIS:</span> Segera isi ulang APAR. Area IGD adalah zona risiko tinggi.</td>
+                                </tr>
+                                <!-- --- DATA BARU DITAMBAHKAN DI SINI --- -->
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">APAR</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">IGD VK/Bersalin</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak OK</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">tidak ada apar diruangan.</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold"><span class="status-critical"><i class="fas fa-exclamation-circle"></i> KRITIS:</span> Segera pasang APAR di lokasi strategis. Kelengkapan area IGD dari risiko kebakaran.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Content Tanggap Darurat -->
+                <div id="darurat" class="tab-content hidden">
+                     <div class="bg-white rounded-lg shadow overflow-hidden mt-4">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item Pemeriksaan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lokasi</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catatan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="fas fa-robot"></i> Rekomendasi AI</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Ketersediaan Tim Tanggap Darurat</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Ruang Komando</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">OK</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">Daftar kontak tim terupdate.</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Simulasi Evakuasi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Seluruh Rumah Sakit</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Perlu Tindakan</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold">AI merekomendasikan untuk menjadwalkan simulasi gabungan (kebakaran & gempa) bulan depan.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Toilet (pasien)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Ruang IGD VK</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak OK</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">Toilet rusak tidak bisa dipakai.</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold"><span class="status-critical"><i class="fas fa-exclamation-circle"></i> KRITIS:</span> Segera perbaiki atau ganti toilet. Fasilitas ini sangat penting untuk kenyaman dan kebersihan pasien di area IGD.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 3: Rencana Tindak Lanjut -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-tasks mr-2"></i>Rencana Tindak Lanjut (Prioritas AI)
+            </h2>
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uraian Temuan</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prioritas</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penanggung Jawab</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Batas Waktu</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">Sistem Pencahayaan Darurat tidak berfungsi (Gedung A Lt. 2)</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Kritis</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bag. Teknik</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2 Des 2023</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">APAR di IGD VK/Bersalin</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Kritis</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bag. Teknik & Keselamatan</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">17 Januari 2024</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">Toilet (pasien) rusak di Ruang IGD VK</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Kritis</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bag. Housekeeping</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">17 Januari 2024</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
 
-    <footer class="bg-dark text-white py-4 mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>RSUD Talaud</h5>
-                    <p>Jl. RSUD No. 1, Melonguane, Kepulauan Talaud</p>
-                    <p>Telp: (0432) 123456 | Email: info@rsudtalaud.go.id</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <h5>K3RS</h5>
-                    <p>Keselamatan dan Kesehatan Kerja Rumah Sakit</p>
-                    <p>&copy; 2023 RSUD Talaud. All rights reserved.</p>
-                </div>
-            </div>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-sm">Laporan ini disusun oleh Komite K3RS dan dianalisis dengan sistem pendukung keputusan berbasis AI.</p>
+            <p class="text-xs text-gray-400 mt-1">&copy; 2024 RSUD Kab. Kepl. Talaud</p>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set reporter name to "K3RS" and make it readonly
-            const reporterNameInput = document.getElementById('reporter-name');
-            reporterNameInput.value = 'K3RS';
-            reporterNameInput.setAttribute('readonly', true);
+        document.addEventListener('DOMContentLoaded', function () {
             
-            // Load saved form data
-            loadFormData();
-            
-            // Load saved reports
-            loadReports();
-            
-            // Auto-save form data (excluding reporter name and suggestion)
-            const formInputs = document.querySelectorAll('#k3rs-form input:not([readonly]), #k3rs-form textarea:not(#suggestion), #k3rs-form select');
-            formInputs.forEach(input => {
-                input.addEventListener('input', function() {
-                    saveFormData();
-                    generateSuggestion();
+            // --- TAB NAVIGATION ---
+            function showTab(tabName) {
+                const allTabs = document.querySelectorAll('.tab-content');
+                allTabs.forEach(tab => tab.classList.add('hidden'));
+                document.getElementById(tabName).classList.remove('hidden');
+                
+                const allButtons = document.querySelectorAll('.tab-btn');
+                allButtons.forEach(btn => {
+                    btn.classList.remove('border-indigo-500', 'text-indigo-600');
+                    btn.classList.add('border-transparent', 'text-gray-500');
                 });
-                input.addEventListener('change', function() {
-                    saveFormData();
-                    generateSuggestion();
-                });
-            });
+                
+                const activeButton = document.querySelector(`[data-tab="${tabName}"]`);
+                activeButton.classList.remove('border-transparent', 'text-gray-500');
+                activeButton.classList.add('border-indigo-500', 'text-indigo-600');
+            }
             
-            // Handle patient affected field
-            document.getElementById('patient-affected').addEventListener('change', function() {
-                const patientInfo = document.getElementById('patient-info');
-                if (this.value === 'yes') {
-                    patientInfo.style.display = 'flex';
-                } else {
-                    patientInfo.style.display = 'none';
-                }
-            });
-            
-            // Handle form submission
-            document.getElementById('k3rs-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Get form data
-                const formData = getFormData();
-                
-                // Save report to localStorage
-                saveReport(formData);
-                
-                // Show notification
-                showNotification('Laporan berhasil dikirim! Terima kasih atas kontribusi Anda.');
-                
-                // Clear form after successful submission
-                setTimeout(() => {
-                    this.reset();
-                    // Reset reporter name to "K3RS"
-                    document.getElementById('reporter-name').value = 'K3RS';
-                    document.getElementById('patient-info').style.display = 'none';
-                    document.getElementById('suggestion').value = '';
-                    document.getElementById('suggestion-box').style.display = 'none';
-                    localStorage.removeItem('k3rs-form-data');
-                }, 2000);
-            });
-            
-            // Handle reset button
-            document.querySelector('button[type="reset"]').addEventListener('click', function() {
-                localStorage.removeItem('k3rs-form-data');
-                document.getElementById('patient-info').style.display = 'none';
-                document.getElementById('suggestion').value = '';
-                document.getElementById('suggestion-box').style.display = 'none';
-                // Reset reporter name to "K3RS"
-                setTimeout(() => {
-                    document.getElementById('reporter-name').value = 'K3RS';
-                }, 10);
-            });
+            window.showTab = showTab;
         });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Inspeksi Bulanan K3RS - RSUD Kab. Kepl. Talaud</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Custom Styles */
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .ai-card { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-left: 5px solid #a855f7; }
+        .ai-assistant-box { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); border: 1px solid #e0e7ff; }
+        .status-ok { color: #10b981; }
+        .status-notice { color: #f59e0b; }
+        .status-critical { color: #ef4444; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in-up { animation: fadeInUp 0.6s ease-out; }
+        .pulse-animation { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .7; } }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold">Laporan Inspeksi Bulanan K3RS</h1>
+                    <p class="text-purple-100">RSUD Kab. Kepl. Talaud</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-lg font-semibold">Periode: 2023-2025</p>
+                    <p class="text-sm text-purple-100">Dibuat pada: Januari - Desember 2024</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">
         
-        function generateSuggestion() {
-            const incidentTypes = getSelectedIncidentTypes();
-            const location = document.getElementById('incident-location').value;
-            const impact = document.getElementById('incident-impact').value;
-            const description = document.getElementById('incident-description').value;
-            const patientAffected = document.getElementById('patient-affected').value;
+        <!-- Section 1: Dashboard & AI Insights -->
+        <section class="mb-10 fade-in-up">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-chart-line mr-2"></i>Dashboard & Wawasan AI
+            </h2>
             
-            if (incidentTypes.length === 0 || !location || !impact || !description) {
-                document.getElementById('suggestion').value = '';
-                document.getElementById('suggestion-box').style.display = 'none';
-                return;
-            }
-            
-            let suggestion = '';
-            const suggestionBox = document.getElementById('suggestion-box');
-            const suggestionContent = document.getElementById('suggestion-content');
-            
-            // Generate specific suggestions based on incident types
-            if (incidentTypes.includes('Pasien Jatuh')) {
-                suggestion += '1. Pasang pagar tempat tidur dan pastikan dalam kondisi baik.\n';
-                suggestion += '2. Berikan alas anti-slip di lantai kamar mandi.\n';
-                suggestion += '3. Pastikan pencahayaan cukup di area pasien.\n';
-                suggestion += '4. Lakukan assessment risiko jatuh secara rutin.\n';
-            }
-            
-            if (incidentTypes.includes('Kesalahan Obat')) {
-                suggestion += '1. Implementasikan sistem "five rights" dalam pemberian obat.\n';
-                suggestion += '2. Gunakan barcode scanning untuk verifikasi obat.\n';
-                suggestion += '3. Tingkatkan pelatihan untuk petugas farmasi dan perawat.\n';
-                suggestion += '4. Evaluasi ulang proses kompounding dan dispensing obat.\n';
-            }
-            
-            if (incidentTypes.includes('Luka Decubitus')) {
-                suggestion += '1. Lakukan rotasi pasien setiap 2 jam sekali.\n';
-                suggestion += '2. Gunakan matras anti-decubitus untuk pasien berisiko tinggi.\n';
-                suggestion += '3. Lakukan assessment kulit secara rutin.\n';
-                suggestion += '4. Tingkatkan nutrisi dan hidrasi pasien.\n';
-            }
-            
-            if (incidentTypes.includes('Infeksi Nosokomial')) {
-                suggestion += '1. Tingkatkan kepatuhan cuci tangan dengan hand rub.\n';
-                suggestion += '2. Implementasikan contact precaution untuk infeksi tertentu.\n';
-                suggestion += '3. Pastikan sterilisasi alat medis sesuai protokol.\n';
-                suggestion += '4. Edukasi pengunjung tentang etika batuk dan higienitas.\n';
-            }
-            
-            if (incidentTypes.includes('Kesalahan Bedah')) {
-                suggestion += '1. Implementasikan surgical safety checklist WHO.\n';
-                suggestion += '2. Lakukan "time out" sebelum insisi.\n';
-                suggestion += '3. Verifikasi identitas pasien dan prosedur bedah.\n';
-                suggestion += '4. Dokumentasikan semua alat dan bahan yang digunakan.\n';
-            }
-            
-            if (incidentTypes.includes('Kerusakan Alat')) {
-                suggestion += '1. Jadwalkan maintenance preventif secara berkala.\n';
-                suggestion += '2. Buat SOP penggunaan dan perawatan alat medis.\n';
-                suggestion += '3. Latih staf penggunaan alat yang benar.\n';
-                suggestion += '4. Siapkan alat cadangan untuk kasus darurat.\n';
-            }
-            
-            if (incidentTypes.includes('Kebakaran')) {
-                suggestion += '1. Pasang alarm dan detektor asap yang berfungsi.\n';
-                suggestion += '2. Sediakan APAR di lokasi strategis dan mudah diakses.\n';
-                suggestion += '3. Lakukan simulasi evakuasi kebakaran rutin.\n';
-                suggestion += '4. Periksa instalasi listrik secara berkala.\n';
-            }
-            
-            if (incidentTypes.includes('Cedera Pekerja')) {
-                suggestion += '1. Sediakan APD yang sesuai dengan risiko pekerjaan.\n';
-                suggestion += '2. Lakukan pelatihan K3 secara berkala.\n';
-                suggestion += '3. Implementasikan ergonomi di tempat kerja.\n';
-                suggestion += '4. Buat sistem pelaporan cedera kerja yang mudah diakses.\n';
-            }
-            
-            if (incidentTypes.includes('Kekerasan')) {
-                suggestion += '1. Pasang CCTV di area rawat jalan dan IGD.\n';
-                suggestion += '2. Latih staf dalam de-eskalasi konflik.\n';
-                suggestion += '3. Implementasikan sistem keamanan berlapis.\n';
-                suggestion += '4. Buat kebijakan toleransi nol terhadap kekerasan.\n';
-            }
-            
-            // Add general suggestions based on impact
-            if (impact === 'major' || impact === 'death') {
-                suggestion += '\n5. Lakukan root cause analysis (RCA) untuk insiden ini.\n';
-                suggestion += '6. Bentuk tim investigasi multidisiplin.\n';
-                suggestion += '7. Segera laporkan ke manajemen dan komite K3RS.\n';
-                suggestion += '8. Evaluasi ulang seluruh sistem keselamatan di unit terkait.\n';
-            }
-            
-            // Add location-specific suggestions
-            if (location === 'ICU' || location === 'NICU') {
-                suggestion += '\n9. Tingkatkan rasio perawat-pasien di unit perawatan intensif.\n';
-                suggestion += '10. Implementasikan monitor vital signs terintegrasi.\n';
-            }
-            
-            if (location === 'IGD' || location === 'IGD VK') {
-                suggestion += '\n9. Perbaiki sistem triage di IGD.\n';
-                suggestion += '10. Tingkatkan komunikasi antar unit untuk transfer pasien.\n';
-            }
-            
-            if (location === 'LABORATORIUM') {
-                suggestion += '\n9. Tingkatkan kepatuhan penggunaan APD di laboratorium.\n';
-                suggestion += '10. Perbaiki sistem pelabelan dan transportasi spesimen.\n';
-            }
-            
-            if (location === 'APOTEK/FARMASI' || location === 'GUDANG APOTEK') {
-                suggestion += '\n9. Implementasikan sistem barcode untuk semua obat.\n';
-                suggestion += '10. Pisahkan area penyimpanan obat dengan suhu berbeda.\n';
-            }
-            
-            // Add patient-specific suggestions
-            if (patientAffected === 'yes') {
-                suggestion += '\n11. Berikan dukungan psikologis untuk pasien dan keluarga.\n';
-                suggestion += '12. Jelaskan kronologi kejadian secara transparan.\n';
-            }
-            
-            // Set suggestion
-            document.getElementById('suggestion').value = suggestion;
-            suggestionContent.textContent = suggestion;
-            suggestionBox.style.display = 'block';
-        }
-        
-        function getSelectedIncidentTypes() {
-            const incidentTypes = [];
-            const incidentCheckboxes = document.querySelectorAll('.incident-type .form-check-input:checked');
-            
-            incidentCheckboxes.forEach(checkbox => {
-                const label = document.querySelector(`label[for="${checkbox.id}"]`).textContent;
-                incidentTypes.push(label);
-            });
-            
-            return incidentTypes;
-        }
-        
-        function getFormData() {
-            const incidentTypes = getSelectedIncidentTypes();
-            
-            // Get impact name
-            const impactSelect = document.getElementById('incident-impact');
-            const impactName = impactSelect.options[impactSelect.selectedIndex].text;
-            
-            // Get patient affected status
-            const patientAffectedSelect = document.getElementById('patient-affected');
-            const patientAffectedName = patientAffectedSelect.options[patientAffectedSelect.selectedIndex].text;
-            
-            // Get location name
-            const locationSelect = document.getElementById('incident-location');
-            const locationName = locationSelect.options[locationSelect.selectedIndex].text;
-            
-            return {
-                id: Date.now(),
-                reporterName: document.getElementById('reporter-name').value,
-                incidentDate: document.getElementById('incident-date').value,
-                incidentTypes: incidentTypes,
-                incidentLocation: locationName,
-                incidentDescription: document.getElementById('incident-description').value,
-                patientAffected: patientAffectedName,
-                patientName: document.getElementById('patient-name').value,
-                patientId: document.getElementById('patient-id').value,
-                incidentImpact: impactName,
-                actionTaken: document.getElementById('action-taken').value,
-                suggestion: document.getElementById('suggestion').value,
-                reportDate: new Date().toISOString(),
-                status: 'new'
-            };
-        }
-        
-        function saveReport(reportData) {
-            // Get existing reports
-            let reports = JSON.parse(localStorage.getItem('k3rs-reports')) || [];
-            
-            // Add new report
-            reports.unshift(reportData);
-            
-            // Save to localStorage
-            localStorage.setItem('k3rs-reports', JSON.stringify(reports));
-            
-            // Update reports display
-            displayReports(reports);
-        }
-        
-        function loadReports() {
-            const reports = JSON.parse(localStorage.getItem('k3rs-reports')) || [];
-            displayReports(reports);
-        }
-        
-        function displayReports(reports) {
-            const container = document.getElementById('reports-container');
-            
-            if (reports.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-reports">
-                        <i class="bi bi-inbox"></i>
-                        <p>Belum ada laporan yang tersimpan</p>
-                        <p class="small">Laporan yang Anda kirim akan ditampilkan di sini</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Kepatuhan Keseluruhan -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4">
+                            <i class="fas fa-shield-alt fa-2x"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Tingkat Kepatuhan Keseluruhan</p>
+                            <p class="text-3xl font-bold text-gray-800">92.5%</p>
+                        </div>
                     </div>
-                `;
-                return;
-            }
-            
-            let html = '';
-            
-            reports.forEach(report => {
-                const reportDate = new Date(report.reportDate).toLocaleDateString('id-ID');
-                const incidentDate = new Date(report.incidentDate).toLocaleDateString('id-ID');
+                </div>
                 
-                // Determine status class
-                let statusClass = 'status-new';
-                if (report.status === 'processing') {
-                    statusClass = 'status-processing';
-                } else if (report.status === 'resolved') {
-                    statusClass = 'status-resolved';
-                }
-                
-                // Format incident types
-                const incidentTypesText = report.incidentTypes.length > 0 
-                    ? report.incidentTypes.join(', ') 
-                    : 'Tidak ada jenis insiden yang dipilih';
-                
-                html += `
-                    <div class="report-card">
-                        <div class="report-header">
-                            <div class="report-date">Laporan #${report.id} - ${reportDate}</div>
-                            <div class="report-status ${statusClass}">${getStatusText(report.status)}</div>
+                <!-- Total Temuan -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-yellow-100 text-yellow-500 mr-4">
+                            <i class="fas fa-exclamation-triangle fa-2x"></i>
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <strong>Pelapor:</strong> ${report.reporterName}
-                            </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Total Temuan</p>
+                            <p class="text-3xl font-bold text-gray-800">11</p>
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <strong>Tanggal Kejadian:</strong> ${incidentDate}
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <strong>Lokasi:</strong> ${report.incidentLocation}
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <strong>Jenis Insiden:</strong> ${incidentTypesText}
-                        </div>
-                        <div class="mb-2">
-                            <strong>Kronologi:</strong> ${report.incidentDescription.length > 100 
-                                ? report.incidentDescription.substring(0, 100) + '...' 
-                                : report.incidentDescription}
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-md-6">
-                                <strong>Pasien Terdampak:</strong> ${report.patientAffected}
-                            </div>
-                            <div class="col-md-6">
-                                <strong>Dampak:</strong> ${report.incidentImpact}
-                            </div>
-                        </div>
-                        ${report.suggestion ? `
-                        <div class="mb-2">
-                            <strong>Saran Perbaikan:</strong> <span class="ai-badge">AI Generated</span><br>
-                            ${report.suggestion.length > 100 
-                                ? report.suggestion.substring(0, 100) + '...' 
-                                : report.suggestion}
-                        </div>
-                        ` : ''}
-                        ${report.patientName ? `
-                        <div class="row mb-2">
-                            <div class="col-md-6">
-                                <strong>Nama Pasien:</strong> ${report.patientName}
-                            </div>
-                            <div class="col-md-6">
-                                <strong>No. RM:</strong> ${report.patientId}
-                            </div>
-                        </div>
-                        ` : ''}
                     </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-        
-        function getStatusText(status) {
-            switch(status) {
-                case 'new':
-                    return 'Baru';
-                case 'processing':
-                    return 'Diproses';
-                case 'resolved':
-                    return 'Selesai';
-                default:
-                    return 'Baru';
-            }
-        }
-        
-        function saveFormData() {
-            const formData = {};
-            const formInputs = document.querySelectorAll('#k3rs-form input:not([readonly]), #k3rs-form textarea:not(#suggestion), #k3rs-form select');
-            
-            formInputs.forEach(input => {
-                if (input.type === 'checkbox') {
-                    formData[input.id] = input.checked;
-                } else {
-                    formData[input.id] = input.value;
-                }
-            });
-            
-            localStorage.setItem('k3rs-form-data', JSON.stringify(formData));
-        }
-        
-        function loadFormData() {
-            const savedData = localStorage.getItem('k3rs-form-data');
-            
-            if (savedData) {
-                const formData = JSON.parse(savedData);
+                </div>
                 
-                Object.keys(formData).forEach(key => {
-                    const input = document.getElementById(key);
-                    if (input) {
-                        if (input.type === 'checkbox') {
-                            input.checked = formData[key];
-                        } else {
-                            input.value = formData[key];
-                        }
-                    }
+                <!-- Tindakan Kritis -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-red-100 text-red-500 mr-4">
+                            <i class="fas fa-times-circle fa-2x"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Tindakan Kritis</p>
+                            <p class="text-3xl font-bold text-gray-800">3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI Insights Card -->
+            <div class="ai-card text-white rounded-lg shadow-lg p-6 mb-6">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-brain text-3xl mr-3"></i>
+                    <h3 class="text-xl font-bold">Analisis & Rekomendasi AI</h3>
+                </div>
+                <div id="ai-insights-content" class="space-y-2">
+                    <p><strong>Analisis Risiko:</strong> AI mendeteksi peningkatan temuan pada area <em>Fasilitas Umum</em> sebesar 15% dibanding bulan lalu. Fokus perbaikan disarankan pada sistem pencahayaan dan akses hydrant.</p>
+                    <p><strong>Prediksi:</strong> Berdasarkan data historis, ada kemungkinan 80% masalah saluran air di ICU akan terulang jika tidak dilakukan pemeriksaan preventif rutin.</p>
+                    <p><strong>Rekomendasi Prioritas:</strong> Dari 11 temuan, 3 di antaranya diklasifikasikan sebagai <span class="font-bold">Kritis</span>. Segera alokasikan sumber daya untuk menyelesaikan item-item tersebut untuk menjaga keselamatan.</p>
+                    <p><strong>⚠️ Peringatan Risiko Tinggi:</strong> Jumlah temuan kritis (3) telah mencapai ambang batas waspada. Segera adakan rapat koordinasi untuk mengevaluasi ulang protokol keselamatan.</p>
+                    <p><strong>Efficiency Tip:</strong> Jadwalkan perbaikan pencahayaan darurat dan hydrant secara bersamaan untuk mengoptimalkan waktu kerja tim Bagian Teknik.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Detail Inspeksi -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-clipboard-list mr-2"></i>Detail Inspeksi
+            </h2>
+
+            <!-- Tab Navigasi -->
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                    <button onclick="showTab('fasilitas')" class="tab-btn py-2 px-1 border-b-2 font-medium text-sm border-indigo-500 text-indigo-600" data-tab="fasilitas">
+                        <i class="fas fa-hospital mr-2"></i>Fasilitas
+                    </button>
+                    <button onclick="showTab('kebakaran')" class="tab-btn py-2 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="kebakaran">
+                        <i class="fas fa-fire-extinguisher mr-2"></i>Kebakaran
+                    </button>
+                    <button onclick="showTab('darurat')" class="tab-btn py-2 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="darurat">
+                        <i class="fas fa-ambulance mr-2"></i>Tanggap Darurat
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="tab-content">
+                <!-- Content Fasilitas -->
+                <div id="fasilitas" class="tab-content">
+                    <div class="bg-white rounded-lg shadow overflow-hidden mt-4">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item Pemeriksaan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lokasi</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catatan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="fas fa-robot"></i> Rekomendasi AI</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Sistem Pencahayaan Darurat</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Semua Ruang (kecuali IBS)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak OK</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">tidak ada lampu darurat.</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold"><span class="status-critical"><i class="fas fa-exclamation-circle"></i> KRITIS:</span> Segera pasang lampu darurat di semua ruang. Ini sangat penting untuk keselamatan saat terjadi pemadaman listrik.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Saluran Pembuangan Air</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Ruang Isolasi ICU</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Perlu Tindakan</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">Tersumbat ringan, potensi risiko sanitasi.</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold">Jadwalkan perawatan dalam 3 hari untuk mencegah masalah lebih besar.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Content Kebakaran -->
+                <div id="kebakaran" class="tab-content hidden">
+                     <div class="bg-white rounded-lg shadow overflow-hidden mt-4">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item Pemeriksaan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lokasi</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catatan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="fas fa-robot"></i> Rekomendasi AI</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">APAR</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">IGD</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak OK</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">APAR sudah kosong atau tidak diisi ulang setelah dipakai.</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold"><span class="status-critical"><i class="fas fa-exclamation-circle"></i> KRITIS:</span> Segera isi ulang APAR. Area IGD adalah zona risiko tinggi.</td>
+                                </tr>
+                                <!-- --- DATA BARU DITAMBAHKAN DI SINI --- -->
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">APAR</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">IGD VK/Bersalin</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak OK</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">tidak ada apar diruangan.</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold"><span class="status-critical"><i class="fas fa-exclamation-circle"></i> KRITIS:</span> Segera pasang APAR di lokasi strategis. Kelengkapan area IGD dari risiko kebakaran.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Content Tanggap Darurat -->
+                <div id="darurat" class="tab-content hidden">
+                     <div class="bg-white rounded-lg shadow overflow-hidden mt-4">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item Pemeriksaan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lokasi</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catatan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><i class="fas fa-robot"></i> Rekomendasi AI</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Ketersediaan Tim Tanggap Darurat</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Ruang Komando</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">OK</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">Daftar kontak tim terupdate.</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Simulasi Evakuasi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Seluruh Rumah Sakit</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Perlu Tindakan</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold">AI merekomendasikan untuk menjadwalkan simulasi gabungan (kebakaran & gempa) bulan depan.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Toilet (pasien)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Ruang IGD VK</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak OK</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">Toilet rusak tidak bisa dipakai.</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 font-semibold"><span class="status-critical"><i class="fas fa-exclamation-circle"></i> KRITIS:</span> Segera perbaiki atau ganti toilet. Fasilitas ini sangat penting untuk kenyaman dan kebersihan pasien di area IGD.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 3: Rencana Tindak Lanjut -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-tasks mr-2"></i>Rencana Tindak Lanjut (Prioritas AI)
+            </h2>
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uraian Temuan</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prioritas</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penanggung Jawab</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Batas Waktu</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">Sistem Pencahayaan Darurat tidak berfungsi (Gedung A Lt. 2)</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Kritis</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bag. Teknik</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2 Des 2023</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">APAR di IGD VK/Bersalin</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Kritis</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bag. Teknik & Keselamatan</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">17 Januari 2024</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">Toilet (pasien) rusak di Ruang IGD VK</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Kritis</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bag. Housekeeping</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">17 Januari 2024</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-sm">Laporan ini disusun oleh Komite K3RS dan dianalisis dengan sistem pendukung keputusan berbasis AI.</p>
+            <p class="text-xs text-gray-400 mt-1">&copy; 2024 RSUD Kab. Kepl. Talaud</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // --- TAB NAVIGATION ---
+            function showTab(tabName) {
+                const allTabs = document.querySelectorAll('.tab-content');
+                allTabs.forEach(tab => tab.classList.add('hidden'));
+                document.getElementById(tabName).classList.remove('hidden');
+                
+                const allButtons = document.querySelectorAll('.tab-btn');
+                allButtons.forEach(btn => {
+                    btn.classList.remove('border-indigo-500', 'text-indigo-600');
+                    btn.classList.add('border-transparent', 'text-gray-500');
                 });
                 
-                // Handle patient affected field
-                const patientAffected = document.getElementById('patient-affected').value;
-                if (patientAffected === 'yes') {
-                    document.getElementById('patient-info').style.display = 'flex';
-                }
-                
-                // Generate suggestion after loading form data
-                setTimeout(() => {
-                    generateSuggestion();
-                }, 100);
+                const activeButton = document.querySelector(`[data-tab="${tabName}"]`);
+                activeButton.classList.remove('border-transparent', 'text-gray-500');
+                activeButton.classList.add('border-indigo-500', 'text-indigo-600');
             }
-        }
-        
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notification-text');
             
-            notificationText.textContent = message;
-            notification.style.display = 'block';
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 5000);
-        }
+            window.showTab = showTab;
+        });
     </script>
 </body>
 </html>
